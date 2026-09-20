@@ -19,10 +19,7 @@ jobs:
           tar -xzf liquibase-4.29.2.tar.gz -C liquibase_bin
           echo "${GITHUB_WORKSPACE}/liquibase_bin" >> $GITHUB_PATH
 
-      - name: Install Databricks extensions
-        run: |
-          liquibase lpm add liquibase-databricks
-          liquibase lpm add databricks-jdbc
+      
 
       - name: Validate changelog
         env:
