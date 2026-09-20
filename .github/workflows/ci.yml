@@ -20,8 +20,8 @@ jobs:
 
       - name: Install Databricks extensions
         run: |
-          liquibase lpm add liquibase-databricks
-          liquibase lpm add databricks-jdbc
+          lpm add liquibase-databricks
+          lpm add databricks-jdbc
 
       - name: Validate changelog
         env:
