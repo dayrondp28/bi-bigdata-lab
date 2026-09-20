@@ -12,18 +12,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Liquibase
-        uses: liquibase/setup-liquibase@v3.0.0
+      - name: Setup Java
+        uses: actions/setup-java@v4
         with:
-          version: '4.32.0'
-          edition: 'community'
+          distribution: 'temurin'
+          java-version: '17'
 
-      - name: Download and Verify Databricks Driver
+      - name: Download Databricks Driver
         run: |
-          mkdir -p lib ~/.liquibase/lib
+          mkdir -p lib
           curl -sL "https://repo1.maven.org/maven2/com/databricks/databricks-jdbc/2.6.35/databricks-jdbc-2.6.35.jar" -o lib/databricks-jdbc.jar
-          cp lib/databricks-jdbc.jar ~/.liquibase/lib/
-          ls -lh lib/databricks-jdbc.jar
+
+      - name: Download Liquibase CLI Manually
+        run: |
+          wget -q https://github.com/liquibase/liquibase/releases/download/v4.32.0/liquibase-4.32.0.tar.gz
+          mkdir -p liquibase-cli
+          tar -xzf liquibase-4.32.0.tar.gz -C liquibase-cli
+          echo "$PWD/liquibase-cli" >> $GITHUB_PATH
 
       - name: Validate changelog
         env:
