@@ -6,30 +6,17 @@ on:
       - main
 
 jobs:
-validate:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
+      - name: Setup Liquibase
+        uses: liquibase/setup-liquibase@v3.0.0
         with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Download Liquibase CLI and Databricks Driver
-        run: |
-          # Descargar e instalar Liquibase manualmente
-          wget -q https://github.com/liquibase/liquibase/releases/download/v4.32.0/liquibase-4.32.0.tar.gz
-          mkdir -p liquibase-cli
-          tar -xzf liquibase-4.32.0.tar.gz -C liquibase-cli
-          
-          # Descargar el driver de Databricks y colocarlo DIRECTAMENTE en la carpeta lib/ interna de Liquibase
-          curl -sL "https://repo1.maven.org/maven2/com/databricks/databricks-jdbc/2.6.35/databricks-jdbc-2.6.35.jar" -o liquibase-cli/lib/databricks-jdbc.jar
-          
-          # Añadir al PATH
-          echo "$PWD/liquibase-cli" >> $GITHUB_PATH
+          version: '4.32.0'
+          edition: 'community'
 
       - name: Validate changelog
         env:
@@ -40,6 +27,7 @@ validate:
         run: |
           liquibase \
             --changelog-file=changelog/db.changelog-master.sql \
+            --classpath=lib/databricks-jdbc.jar \
             --driver=com.databricks.client.jdbc.Driver \
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
@@ -55,6 +43,7 @@ validate:
         run: |
           liquibase \
             --changelog-file=changelog/db.changelog-master.sql \
+            --classpath=lib/databricks-jdbc.jar \
             --driver=com.databricks.client.jdbc.Driver \
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
@@ -70,6 +59,7 @@ validate:
         run: |
           liquibase \
             --changelog-file=changelog/db.changelog-master.sql \
+            --classpath=lib/databricks-jdbc.jar \
             --driver=com.databricks.client.jdbc.Driver \
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
