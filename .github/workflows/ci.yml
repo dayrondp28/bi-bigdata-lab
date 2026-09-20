@@ -20,8 +20,8 @@ jobs:
 
       - name: Install Databricks extensions
         run: |
-          liquibase lpm add liquibase-databricks --force
-          liquibase lpm add databricks-jdbc --force
+          mkdir -p lib
+          wget -q -O lib/DatabricksJDBC42.jar https://github.com/databricks/databricks-jdbc/releases/download/v2.6.35/DatabricksJDBC42.jar || true
 
       - name: Validate changelog
         env:
