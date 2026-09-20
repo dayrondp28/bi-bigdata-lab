@@ -13,16 +13,16 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Liquibase
-        uses: liquibase/setup-liquibase@v3.0.0
+        uses: liquibase/setup-liquibase@v2
         with:
-          version: '4.32.0'
+          version: '4.29.2'
           edition: 'community'
 
       - name: Install Databricks extensions
         run: |
-          lpm add liquibase-databricks
-          lpm add databricks-jdbc
-          
+          liquibase lpm add liquibase-databricks
+          liquibase lpm add databricks-jdbc
+
       - name: Validate changelog
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
