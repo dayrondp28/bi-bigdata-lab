@@ -12,18 +12,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Liquibase and Databricks Driver
-        run: |
-          wget -q https://github.com/liquibase/liquibase/releases/download/v4.29.2/liquibase-4.29.2.tar.gz
-          mkdir liquibase_bin
-          tar -xzf liquibase-4.29.2.tar.gz -C liquibase_bin
-          echo "${GITHUB_WORKSPACE}/liquibase_bin" >> $GITHUB_PATH
-          
-          # Descargar el driver JDBC oficial de Databricks en la carpeta lib de Liquibase
-          wget -q https://github.com/databricks/databricks-jdbc/releases/download/v2.6.35/DatabricksJDBC42.zip
-          unzip -q DatabricksJDBC42.zip
-          mkdir -p liquibase_bin/lib
-          cp DatabricksJDBC42.jar liquibase_bin/lib/
+      - name: Setup Liquibase
+        uses: liquibase/setup-liquibase@v3.0.0
+        with:
+          version: '4.32.0'
+          edition: 'community'
 
       - name: Validate changelog
         env:
