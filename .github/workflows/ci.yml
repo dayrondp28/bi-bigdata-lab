@@ -18,6 +18,11 @@ jobs:
           version: '4.32.0'
           edition: 'community'
 
+      - name: Install Databricks extensions
+        run: |
+          liquibase lpm add liquibase-databricks --force
+          liquibase lpm add databricks-jdbc --force
+
       - name: Validate changelog
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
