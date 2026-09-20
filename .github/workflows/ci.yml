@@ -18,14 +18,15 @@ jobs:
           version: '4.32.0'
           edition: 'community'
 
-      - name: Download Databricks Driver Locally
+      - name: Download and Verify Databricks Driver
         run: |
-          mkdir -p lib
-          curl -L "https://repo1.maven.org/maven2/com/databricks/databricks-jdbc/2.6.35/databricks-jdbc-2.6.35.jar" -o lib/databricks-jdbc.jar
+          mkdir -p lib ~/.liquibase/lib
+          curl -sL "https://repo1.maven.org/maven2/com/databricks/databricks-jdbc/2.6.35/databricks-jdbc-2.6.35.jar" -o lib/databricks-jdbc.jar
+          cp lib/databricks-jdbc.jar ~/.liquibase/lib/
+          ls -lh lib/databricks-jdbc.jar
 
       - name: Validate changelog
         env:
-          LIQUIBASE_CLASSPATH: lib/databricks-jdbc.jar
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_HTTP_PATH: ${{ secrets.DATABRICKS_HTTP_PATH }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
@@ -33,6 +34,7 @@ jobs:
         run: |
           liquibase \
             --changelog-file=changelog/db.changelog-master.sql \
+            --classpath=lib/databricks-jdbc.jar \
             --driver=com.databricks.client.jdbc.Driver \
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
@@ -41,7 +43,6 @@ jobs:
 
       - name: Show pending changesets
         env:
-          LIQUIBASE_CLASSPATH: lib/databricks-jdbc.jar
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_HTTP_PATH: ${{ secrets.DATABRICKS_HTTP_PATH }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
@@ -49,6 +50,7 @@ jobs:
         run: |
           liquibase \
             --changelog-file=changelog/db.changelog-master.sql \
+            --classpath=lib/databricks-jdbc.jar \
             --driver=com.databricks.client.jdbc.Driver \
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
@@ -57,7 +59,6 @@ jobs:
 
       - name: Preview SQL
         env:
-          LIQUIBASE_CLASSPATH: lib/databricks-jdbc.jar
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_HTTP_PATH: ${{ secrets.DATABRICKS_HTTP_PATH }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
@@ -65,6 +66,7 @@ jobs:
         run: |
           liquibase \
             --changelog-file=changelog/db.changelog-master.sql \
+            --classpath=lib/databricks-jdbc.jar \
             --driver=com.databricks.client.jdbc.Driver \
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
