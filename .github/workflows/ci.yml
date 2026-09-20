@@ -1,23 +1,25 @@
-name: CI - Validate Database Changes
+name: CI - Validate database changes
+
 on:
   pull_request:
     branches:
       - main
+
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Setup Liquibase
-        uses: liquibase/setup-liquibase@v2
-        with:
-          version: '5.0.4'
-          edition: 'community'
+        uses: liquibase/setup-liquibase@v3.0.0
+
       - name: Install Databricks extensions
         run: |
           liquibase lpm add liquibase-databricks
           liquibase lpm add databricks-jdbc
+
       - name: Validate changelog
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
@@ -27,10 +29,11 @@ jobs:
         run: |
           liquibase \
             --changelog-file=changelog/db.changelog-master.sql \
-            --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG};ConnSchema=default;" \
+            --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
             --password="${DATABRICKS_TOKEN}" \
             validate
+
       - name: Show pending changesets
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
@@ -40,10 +43,11 @@ jobs:
         run: |
           liquibase \
             --changelog-file=changelog/db.changelog-master.sql \
-            --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG};ConnSchema=default;" \
+            --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
             --password="${DATABRICKS_TOKEN}" \
             status --verbose
+
       - name: Preview SQL
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
@@ -53,7 +57,7 @@ jobs:
         run: |
           liquibase \
             --changelog-file=changelog/db.changelog-master.sql \
-            --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG};ConnSchema=default;" \
+            --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
             --password="${DATABRICKS_TOKEN}" \
             update-sql
