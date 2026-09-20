@@ -18,10 +18,10 @@ jobs:
           version: '4.32.0'
           edition: 'community'
 
-      - name: Download and Place Databricks Driver
+      - name: Download Databricks Driver Locally
         run: |
-          mkdir -p ~/.liquibase/lib
-          curl -L "https://repo1.maven.org/maven2/com/databricks/databricks-jdbc/2.6.35/databricks-jdbc-2.6.35.jar" -o ~/.liquibase/lib/databricks-jdbc.jar
+          mkdir -p lib
+          curl -L "https://repo1.maven.org/maven2/com/databricks/databricks-jdbc/2.6.35/databricks-jdbc-2.6.35.jar" -o lib/databricks-jdbc.jar
 
       - name: Validate changelog
         env:
@@ -32,7 +32,7 @@ jobs:
         run: |
           liquibase \
             --changelog-file=changelog/db.changelog-master.sql \
-            --classpath=/home/runner/.liquibase/lib/databricks-jdbc.jar \
+            --classpath=${{ github.workspace }}/lib/databricks-jdbc.jar \
             --driver=com.databricks.client.jdbc.Driver \
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
@@ -48,7 +48,7 @@ jobs:
         run: |
           liquibase \
             --changelog-file=changelog/db.changelog-master.sql \
-            --classpath=/home/runner/.liquibase/lib/databricks-jdbc.jar \
+            --classpath=${{ github.workspace }}/lib/databricks-jdbc.jar \
             --driver=com.databricks.client.jdbc.Driver \
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
@@ -64,7 +64,7 @@ jobs:
         run: |
           liquibase \
             --changelog-file=changelog/db.changelog-master.sql \
-            --classpath=/home/runner/.liquibase/lib/databricks-jdbc.jar \
+            --classpath=${{ github.workspace }}/lib/databricks-jdbc.jar \
             --driver=com.databricks.client.jdbc.Driver \
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
