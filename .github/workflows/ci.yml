@@ -20,8 +20,7 @@ jobs:
 
       - name: Install Databricks extensions
         run: |
-          mkdir -p lib
-          wget -q -O lib/databricks-jdbc.jar https://repo1.maven.org/maven2/com/databricks/databricks-jdbc/2.6.35/databricks-jdbc-2.6.35.jar
+          liquibase --version
 
       - name: Validate changelog
         env:
@@ -32,8 +31,6 @@ jobs:
         run: |
           liquibase \
             --changelog-file=changelog/db.changelog-master.sql \
-            --classpath=lib/databricks-jdbc.jar \
-            --driver=com.databricks.client.jdbc.Driver \
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
             --password="${DATABRICKS_TOKEN}" \
@@ -48,8 +45,6 @@ jobs:
         run: |
           liquibase \
             --changelog-file=changelog/db.changelog-master.sql \
-            --classpath=lib/databricks-jdbc.jar \
-            --driver=com.databricks.client.jdbc.Driver \
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
             --password="${DATABRICKS_TOKEN}" \
@@ -64,8 +59,6 @@ jobs:
         run: |
           liquibase \
             --changelog-file=changelog/db.changelog-master.sql \
-            --classpath=lib/databricks-jdbc.jar \
-            --driver=com.databricks.client.jdbc.Driver \
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
             --password="${DATABRICKS_TOKEN}" \
