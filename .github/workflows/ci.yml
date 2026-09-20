@@ -32,7 +32,7 @@ jobs:
         run: |
           liquibase \
             --changelog-file=changelog/db.changelog-master.sql \
-            --classpath=~/.liquibase/lib/databricks-jdbc.jar \
+            --classpath=/home/runner/.liquibase/lib/databricks-jdbc.jar \
             --driver=com.databricks.client.jdbc.Driver \
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
@@ -48,7 +48,7 @@ jobs:
         run: |
           liquibase \
             --changelog-file=changelog/db.changelog-master.sql \
-            --classpath=~/.liquibase/lib/databricks-jdbc.jar \
+            --classpath=/home/runner/.liquibase/lib/databricks-jdbc.jar \
             --driver=com.databricks.client.jdbc.Driver \
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
@@ -64,7 +64,7 @@ jobs:
         run: |
           liquibase \
             --changelog-file=changelog/db.changelog-master.sql \
-            --classpath=~/.liquibase/lib/databricks-jdbc.jar \
+            --classpath=/home/runner/.liquibase/lib/databricks-jdbc.jar \
             --driver=com.databricks.client.jdbc.Driver \
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
