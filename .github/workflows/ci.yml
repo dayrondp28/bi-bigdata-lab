@@ -12,15 +12,27 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Liquibase
-        uses: liquibase/setup-liquibase@v3.0.0
+      - name: Setup Java
+        uses: actions/setup-java@v4
         with:
-          version: '4.32.0'
-          edition: 'community'
+          distribution: 'temurin'
+          java-version: '17'
 
-      - name: Download Liquibase Databricks Extension
+      - name: Install Liquibase and Inject Extensions
         run: |
-          curl -sL "https://repo1.maven.org/maven2/org/liquibase/ext/liquibase-databricks/4.32.0/liquibase-databricks-4.32.0.jar" -o lib/liquibase-databricks.jar
+          # 1. Descargar Liquibase
+          wget -q https://github.com/liquibase/liquibase/releases/download/v4.32.0/liquibase-4.32.0.tar.gz
+          mkdir -p liquibase-cli
+          tar -xzf liquibase-4.32.0.tar.gz -C liquibase-cli
+          
+          # 2. Inyectar el driver JDBC (que ya subimos a tu repo) en el núcleo de Liquibase
+          cp lib/databricks-jdbc.jar liquibase-cli/lib/
+          
+          # 3. Descargar la extensión de Databricks y meterla también en el núcleo
+          curl -sL "https://repo1.maven.org/maven2/org/liquibase/ext/liquibase-databricks/4.32.0/liquibase-databricks-4.32.0.jar" -o liquibase-cli/lib/liquibase-databricks.jar
+          
+          # 4. Añadir Liquibase al PATH
+          echo "$PWD/liquibase-cli" >> $GITHUB_PATH
 
       - name: Validate changelog
         env:
@@ -31,7 +43,6 @@ jobs:
         run: |
           liquibase \
             --changelog-file=changelog/db.changelog-master.sql \
-            --classpath=lib/databricks-jdbc.jar:lib/liquibase-databricks.jar \
             --driver=com.databricks.client.jdbc.Driver \
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
@@ -47,7 +58,6 @@ jobs:
         run: |
           liquibase \
             --changelog-file=changelog/db.changelog-master.sql \
-            --classpath=lib/databricks-jdbc.jar:lib/liquibase-databricks.jar \
             --driver=com.databricks.client.jdbc.Driver \
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
@@ -63,7 +73,6 @@ jobs:
         run: |
           liquibase \
             --changelog-file=changelog/db.changelog-master.sql \
-            --classpath=lib/databricks-jdbc.jar:lib/liquibase-databricks.jar \
             --driver=com.databricks.client.jdbc.Driver \
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
