@@ -36,6 +36,10 @@ jobs:
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
             --password="${DATABRICKS_TOKEN}" \
+            --default-catalog-name="${DATABRICKS_CATALOG}" \
+            --default-schema-name="default" \
+            --database-changelog-table-name="databasechangelog" \
+            --database-changelog-lock-table-name="databasechangeloglock" \
             validate
 
       - name: Show pending changesets
@@ -52,6 +56,10 @@ jobs:
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
             --password="${DATABRICKS_TOKEN}" \
+            --default-catalog-name="${DATABRICKS_CATALOG}" \
+            --default-schema-name="default" \
+            --database-changelog-table-name="databasechangelog" \
+            --database-changelog-lock-table-name="databasechangeloglock" \
             status --verbose
 
       - name: Preview SQL
@@ -68,4 +76,8 @@ jobs:
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
             --password="${DATABRICKS_TOKEN}" \
+            --default-catalog-name="${DATABRICKS_CATALOG}" \
+            --default-schema-name="default" \
+            --database-changelog-table-name="databasechangelog" \
+            --database-changelog-lock-table-name="databasechangeloglock" \
             update-sql
