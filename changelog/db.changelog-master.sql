@@ -7,3 +7,5 @@ COMMENT 'Laboratorio 02 - BI y Big Data - UCV';
 CREATE SCHEMA IF NOT EXISTS workspace.bi_staging_dayron
 COMMENT 'Staging schema - BI and Big Data - Lab 03';
 --rollback DROP SCHEMA IF EXISTS workspace.bi_staging_dayron;
+--include file="changelog/02-insertar-usuarios.sql"
+--include file="changelog/03-crear-tabla-staging.sql"
