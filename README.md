@@ -12,4 +12,4 @@ y versionar el cambio con Git.
 
 ## Alcance
 El laboratorio termina cuando el esquema aparece correctamente
-en Unity Catalog. No se crean tablas ni se cargan datos.
+en Unity Catalog. No se crean tablas ni se cargan datos
