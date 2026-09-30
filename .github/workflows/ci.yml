@@ -31,7 +31,7 @@ jobs:
           LIQUIBASE_CLASSPATH: ${{ github.workspace }}/lib/databricks-jdbc.jar:${{ github.workspace }}/lib/liquibase-databricks.jar
         run: |
           liquibase \
-            --changelog-file=changelog/db.changelog-master.sql \
+            --changelog-file=changelog/db.changelog-master.yaml \
             --driver=com.databricks.client.jdbc.Driver \
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
@@ -51,7 +51,7 @@ jobs:
           LIQUIBASE_CLASSPATH: ${{ github.workspace }}/lib/databricks-jdbc.jar:${{ github.workspace }}/lib/liquibase-databricks.jar
         run: |
           liquibase \
-            --changelog-file=changelog/db.changelog-master.sql \
+            --changelog-file=changelog/db.changelog-master.yaml \
             --driver=com.databricks.client.jdbc.Driver \
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
@@ -71,7 +71,7 @@ jobs:
           LIQUIBASE_CLASSPATH: ${{ github.workspace }}/lib/databricks-jdbc.jar:${{ github.workspace }}/lib/liquibase-databricks.jar
         run: |
           liquibase \
-            --changelog-file=changelog/db.changelog-master.sql \
+            --changelog-file=changelog/db.changelog-master.yaml \
             --driver=com.databricks.client.jdbc.Driver \
             --url="jdbc:databricks://${DATABRICKS_HOST}:443/default;AuthMech=3;httpPath=${DATABRICKS_HTTP_PATH};ConnCatalog=${DATABRICKS_CATALOG}" \
             --username=token \
