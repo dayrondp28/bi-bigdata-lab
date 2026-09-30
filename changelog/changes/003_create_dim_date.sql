@@ -1,6 +1,6 @@
 --liquibase formatted sql
 --changeset estudiante:003
-CREATE TABLE IF NOT EXISTS <CATALOGO>.gold.dim_date (
+CREATE TABLE IF NOT EXISTS gold.dim_date (
     date_key INT,
     full_date DATE,
     day INT,

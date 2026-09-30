@@ -1,6 +1,6 @@
 --liquibase formatted sql
 --changeset estudiante:007
-CREATE TABLE IF NOT EXISTS <CATALOGO>.gold.fact_sales (
+CREATE TABLE IF NOT EXISTS gold.fact_sales (
     sale_id BIGINT,
     date_key INT,
     product_key BIGINT,

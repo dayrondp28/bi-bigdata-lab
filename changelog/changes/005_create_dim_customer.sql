@@ -1,6 +1,6 @@
 --liquibase formatted sql
 --changeset estudiante:005
-CREATE TABLE IF NOT EXISTS <CATALOGO>.gold.dim_customer (
+CREATE TABLE IF NOT EXISTS gold.dim_customer (
     customer_key BIGINT,
     customer_id BIGINT,
     customer_name STRING,
