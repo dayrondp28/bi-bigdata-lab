@@ -21,3 +21,5 @@ databaseChangeLog:
       file: changelog/changes/010_create_customers_raw.sql
   - include:
       file: changelog/changes/011_create_stores_raw.sql
+  - include:
+      file: changelog/changes/012_alter_sales_raw.sql
